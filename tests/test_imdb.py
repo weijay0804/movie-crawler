@@ -1,21 +1,21 @@
-'''
+"""
 Author: weijay
 Date: 2022-12-11 18:12:09
 LastEditors: weijay
 LastEditTime: 2022-12-12 17:27:02
-FilePath: /movie_crawler/tests/test_imdb.py
 Description: 對 IMDB module 的單元測試
-'''
+"""
 
 import unittest
 from unittest.mock import patch
 
 from movie_crawler import IMDB
 
+
 class Top250Resp:
-    ''' 模擬 top 250 html  '''
-    
-    FAKE_HTML="""
+    """模擬 top 250 html"""
+
+    FAKE_HTML = """
         <table>
             <tbody class="lister-list">
                 <tr>
@@ -46,8 +46,8 @@ class Top250Resp:
         </table>
         """
 
-class IMDBTest(unittest.TestCase):
 
+class IMDBTest(unittest.TestCase):
     def setUp(self) -> None:
         self.imdb = IMDB("https://www.imdb.com")
 
@@ -56,11 +56,18 @@ class IMDBTest(unittest.TestCase):
         top250_resp = Top250Resp()
         top250_resp.text = Top250Resp.FAKE_HTML
         top250_resp.status_code = 200
-        self.patcher = patch('requests.get', return_value = top250_resp)
+        self.patcher = patch("requests.get", return_value=top250_resp)
         self.patcher.start()
 
         movie_data = self.imdb.get_top_250()
 
         self.patcher.stop()
 
-        self.assertEqual(movie_data, [{'id': 'tt0111161', 'title': '刺激1995'}, {'id': 'tt0111160', 'title': '測試1'}, {'id': 'tt0111159', 'title': '測試2'}])
+        self.assertEqual(
+            movie_data,
+            [
+                {"id": "tt0111161", "title": "刺激1995"},
+                {"id": "tt0111160", "title": "測試1"},
+                {"id": "tt0111159", "title": "測試2"},
+            ],
+        )
