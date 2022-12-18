@@ -5,5 +5,5 @@ LastEditors: weijay
 LastEditTime: 2022-12-12 17:32:46
 Description: 
 """
-from .imdb import IMDB
-from .tmdb import TMDB
+
+from .movie_crawler import MovieCrawler
