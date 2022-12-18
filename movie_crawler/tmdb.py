@@ -54,12 +54,12 @@ class TMDB:
 
     async def get_tmdb_id_async(
         self, session: aiohttp.ClientSession, imdb_id: str
-    ) -> int:
+    ) -> tuple:
         """使用非同步方式取得 tmdb 電影 id
 
         Args:
             session (aiohttp.ClientSession): ClientSession 實例
-            imdb_id (str): IMDB 電影 id
+            imdb_id (tuple): (TMDB ID, IMDB ID)
 
         Returns:
             int: TMDB 電影 id
@@ -71,4 +71,4 @@ class TMDB:
 
             data = await response.json()
 
-            return data["id"]
+            return data["id"], imdb_id
