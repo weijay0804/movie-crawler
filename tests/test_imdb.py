@@ -12,7 +12,7 @@ from unittest.mock import patch
 from movie_crawler.imdb import IMDB
 
 
-class Top250Resp:
+class MovieTable:
     """模擬 top 250 html"""
 
     FAKE_HTML = """
@@ -53,13 +53,29 @@ class IMDBTest(unittest.TestCase):
 
     def test_get_top_250_function(self):
 
-        top250_resp = Top250Resp()
-        top250_resp.text = Top250Resp.FAKE_HTML
+        top250_resp = MovieTable()
+        top250_resp.text = MovieTable.FAKE_HTML
         top250_resp.status_code = 200
         self.patcher = patch("requests.get", return_value=top250_resp)
         self.patcher.start()
 
         movie_data = self.imdb.get_top_250()
+
+        self.patcher.stop()
+
+        self.assertEqual(
+            movie_data, {"tt0111161": "刺激1995", "tt0111160": "測試1", "tt0111159": "測試2"}
+        )
+
+    def test_get_popular_function(self):
+
+        popular_resp = MovieTable()
+        popular_resp.text = MovieTable.FAKE_HTML
+        popular_resp.status_code = 200
+        self.patcher = patch("requests.get", return_value=popular_resp)
+        self.patcher.start()
+
+        movie_data = self.imdb.get_popular()
 
         self.patcher.stop()
 
