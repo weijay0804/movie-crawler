@@ -32,7 +32,7 @@ class IMDB:
 
         return soup
 
-    def __parse_top_250(self, soup: bs4.BeautifulSoup) -> dict:
+    def __parse_movie_table(self, soup: bs4.BeautifulSoup) -> dict:
         """從 html 中解析出 movie id 和 movie title
 
         Args:
@@ -70,6 +70,21 @@ class IMDB:
 
         soup = self.__init_bs4(url)
 
-        r = self.__parse_top_250(soup)
+        r = self.__parse_movie_table(soup)
+
+        return r
+
+    def get_popular(self) -> dict:
+        """取得熱門電影的 ID 和名稱
+
+        Returns:
+            dict: 其中 key 為 IMDB Id，item 是電影名稱
+        """
+
+        url = self.root_url + "/chart/moviemeter/?ref_=nv_mv_mpm"
+
+        soup = self.__init_bs4(url)
+
+        r = self.__parse_movie_table(soup)
 
         return r

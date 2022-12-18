@@ -25,10 +25,21 @@ class MovieCrawler:
         """取得 IMDB Top 250 電影資料
 
         Returns:
-            dict: dict: 其中 key 為 IMDB Id，item 是電影名稱
+            dict: 其中 key 為 IMDB Id，item 是電影名稱
         """
 
         movies = self.imdb.get_top_250()
+
+        return movies
+
+    def get_imdb_popular(self) -> dict:
+        """取得 IMDB Popular 電影資料
+
+        Returns:
+            dict: 其中 key 為 IMDB Id，item 是電影名稱
+        """
+
+        movies = self.imdb.get_popular()
 
         return movies
 
