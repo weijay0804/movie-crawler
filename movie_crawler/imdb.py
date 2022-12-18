@@ -7,8 +7,6 @@ FilePath: /movie_crawler/movie_crawler/imdb.py
 Description: IMDB 電影模組
 """
 
-from typing import List
-
 import bs4
 
 from .helper import RequestHelper, Bs4Helper
@@ -34,17 +32,17 @@ class IMDB:
 
         return soup
 
-    def __parse_top_250(self, soup: bs4.BeautifulSoup) -> List[dict]:
+    def __parse_top_250(self, soup: bs4.BeautifulSoup) -> dict:
         """從 html 中解析出 movie id 和 movie title
 
         Args:
             soup (bs4.BeautifulSoup): BeautifulSoup 實例
 
         Returns:
-            List[dict]: [ {id: "", "title": ""}, ...]
+            dict: 其中 key 為 IMDB Id，item 是電影名稱
         """
 
-        r = []
+        r = {}
 
         movie_items = soup.find("tbody", class_="lister-list").find_all("tr")
 
@@ -56,15 +54,16 @@ class IMDB:
                 .get("href")
                 .split("/")[2]
             )
-            r.append({"id": imdb_id, "title": title})
+
+            r[imdb_id] = title
 
         return r
 
-    def get_top_250(self) -> List[dict]:
+    def get_top_250(self) -> dict:
         """取得 top 250 的電影 id 和名稱
 
         Returns:
-            List[dict]: [ {id: "", "title": ""}, ...]
+            dict: 其中 key 為 IMDB Id，item 是電影名稱
         """
 
         url = self.root_url + "/chart/top/?ref_=nv_mv_250"
