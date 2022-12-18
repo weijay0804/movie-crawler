@@ -9,7 +9,7 @@ Description: 對 IMDB module 的單元測試
 import unittest
 from unittest.mock import patch
 
-from movie_crawler import IMDB
+from movie_crawler.imdb import IMDB
 
 
 class Top250Resp:
@@ -64,10 +64,5 @@ class IMDBTest(unittest.TestCase):
         self.patcher.stop()
 
         self.assertEqual(
-            movie_data,
-            [
-                {"id": "tt0111161", "title": "刺激1995"},
-                {"id": "tt0111160", "title": "測試1"},
-                {"id": "tt0111159", "title": "測試2"},
-            ],
+            movie_data, {"tt0111161": "刺激1995", "tt0111160": "測試1", "tt0111159": "測試2"}
         )

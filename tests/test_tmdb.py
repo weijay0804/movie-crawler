@@ -9,7 +9,7 @@ Description: 對 TMDB module 的單元測試
 import unittest
 from unittest.mock import patch
 
-from movie_crawler import TMDB
+from movie_crawler.tmdb import TMDB
 
 
 class FakeTMDBIdResp:
