@@ -10,6 +10,7 @@ Description:
 import os
 import time
 import asyncio
+from typing import Iterable, List
 
 from dotenv import load_dotenv
 
@@ -17,6 +18,7 @@ from movie_crawler import MovieCrawler
 
 
 get_time = lambda: time.time()
+get_tmdb_id = lambda movie_list: [i["tmdbId"] for i in movie_list]
 
 
 def get_250():
@@ -69,6 +71,29 @@ def get_popular():
         r.append({"imdbId": d[1], "tmdbId": d[0], "title": imdb_movies[d[1]]})
 
     return r
+
+
+def get_detail(tmdb_id_list: Iterable) -> List[dict]:
+    """取得電影詳細資訊
+
+    Args:
+        tmdb_id_list (Iterable): 有 TMDB ID 資訊的可迭代物件
+
+    Returns:
+        List[dict]: [{movie_detail}, ....]
+    """
+
+    load_dotenv()
+    api_token = os.environ.get("TMDB_API_KEY")
+
+    mc = MovieCrawler(api_token)
+
+    start = get_time()
+    print("Fetch Movie Detail .....")
+    movie_detail = asyncio.run(mc.get_movie_detail(tmdb_id_list))
+    print(f"Done!, Take: {get_time() - start} s")
+
+    return movie_detail
 
 
 if __name__ == "__main__":

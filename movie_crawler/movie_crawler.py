@@ -66,3 +66,27 @@ class MovieCrawler:
             r = await asyncio.gather(*tasks)
 
         return r
+
+    async def get_movie_detail(self, tmdb_id_list: Iterable) -> List[dict]:
+        """使用非同步的方式取得電影詳細資訊
+
+        Args:
+            tmdb_id_list (Iterable): 有 TMDB ID 資訊的可迭代物件
+
+        Returns:
+            List[dict]: [{movie_detail}, ....]
+        """
+
+        async with aiohttp.ClientSession() as session:
+
+            tasks = []
+
+            for tmdb_id in tmdb_id_list:
+
+                tasks.append(
+                    asyncio.create_task(self.tmdb.get_detail(session, tmdb_id))
+                )
+
+            r = await asyncio.gather(*tasks)
+
+        return r

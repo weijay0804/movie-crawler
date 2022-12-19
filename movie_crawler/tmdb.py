@@ -72,3 +72,22 @@ class TMDB:
             data = await response.json()
 
             return data["id"], imdb_id
+
+    async def get_detail(self, session: aiohttp.ClientSession, tmdb_id: int) -> dict:
+        """使用非同步的方式取得電影詳細資訊
+
+        Args:
+            session (aiohttp.ClientSession): ClientSession 實例
+            tmdb_id (int): TMDB 電影 ID
+
+        Returns:
+            dict: 回傳的 response 資訊
+        """
+
+        url = self.root_url + f"/movie/{tmdb_id}?api_key={self.api_key}&language=zh-TW"
+
+        async with session.get(url, ssl=False) as response:
+
+            data = await response.json()
+
+            return data
